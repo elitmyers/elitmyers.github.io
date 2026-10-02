@@ -52,8 +52,10 @@
     border-bottom: 1px solid var(--line);
   }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; }
-  .nav-logo { font-family: var(--display); font-size: 1.9rem; letter-spacing: 0.02em; text-decoration: none; line-height: 1; }
-  .nav-logo span { color: var(--red); }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; line-height: 1; }
+  .nav-logo svg { width: 44px; height: 44px; }
+  .nav-logo-text { font-family: var(--display); font-size: 1.5rem; letter-spacing: 0.02em; }
+  .nav-logo-text span { color: var(--red); }
   .nav-links { display: flex; align-items: center; gap: 1.75rem; }
   .nav-links a:not(.btn) { text-decoration: none; font-weight: 500; font-size: 0.95rem; color: var(--muted); }
   .nav-links a:not(.btn):hover { color: var(--snow); }
@@ -95,7 +97,6 @@
   .wordmark .l:nth-child(3) { --r: -2deg; }
   .wordmark .l:nth-child(4) { --r: 3deg; }
   .wordmark .l:nth-child(5) { --r: -5deg; }
-  .toque { position: absolute; width: 0.42em; left: -0.08em; top: -0.3em; transform: rotate(-20deg); }
 
   .hero-lede { max-width: 34ch; margin: 1.75rem auto 0; font-size: clamp(1.15rem, 2.4vw, 1.4rem); line-height: 1.45; color: var(--muted); }
   .hero-lede strong { color: var(--snow); font-weight: 600; }
@@ -109,15 +110,10 @@
     .wordmark .l:nth-child(3) { animation-delay: 0.16s; }
     .wordmark .l:nth-child(4) { animation-delay: 0.24s; }
     .wordmark .l:nth-child(5) { animation-delay: 0.32s; }
-    .toque { animation: plop 0.6s 0.65s cubic-bezier(.3,1.6,.5,1) both; }
   }
   @keyframes drop {
     from { transform: translateY(-110%) rotate(calc(var(--r) * -3)); opacity: 0; }
     to { transform: translateY(0) rotate(var(--r)); opacity: 1; }
-  }
-  @keyframes plop {
-    from { transform: translateY(-80%) rotate(25deg); opacity: 0; }
-    to { transform: translateY(0) rotate(-20deg); opacity: 1; }
   }
 
   /* ---------- Sections ---------- */
@@ -134,7 +130,17 @@
   .about-copy p { margin: 0 0 1rem; max-width: 60ch; }
   .facts { list-style: none; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
   .facts li { display: grid; grid-template-columns: 2.75rem 1fr; gap: 0.9rem; align-items: start; }
-  .facts .ico { font-size: 1.6rem; line-height: 1; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; background: var(--night); border-radius: 50%; }
+  .facts .ico { 
+    font-size: 1.3rem; 
+    line-height: 1; 
+    width: 2.75rem; 
+    height: 2.75rem; 
+    display: grid; 
+    place-items: center; 
+    background: transparent; 
+    border-radius: 0;
+    color: var(--red);
+  }
   .facts b { display: block; font-weight: 700; }
   .facts span.t { color: #3B4766; font-size: 0.98rem; }
 
@@ -164,7 +170,7 @@
   .signup { display: grid; gap: 2.5rem; grid-template-columns: 1fr; }
   @media (min-width: 900px) { .signup { grid-template-columns: 0.85fr 1.15fr; gap: 4rem; align-items: start; } }
   .signup-side p { margin: 0 0 1rem; color: #3B4766; max-width: 44ch; }
-  .signup-side .note { display: inline-block; margin-top: 0.5rem; background: var(--ember); color: var(--deep); font-weight: 600; padding: 0.6rem 0.9rem; border-radius: 8px; transform: rotate(-1deg); font-size: 0.95rem; }
+  .signup-side .note { display: inline-block; margin-top: 0.5rem; background: var(--ember); color: var(--deep); font-weight: 600; padding: 0.6rem 0.9rem; border-radius: 8px; transform: rotate(-1deg); }
   form {
     background: #fff; border: 3px solid var(--night); border-radius: 18px; padding: clamp(1.5rem, 4vw, 2.25rem);
     box-shadow: 8px 8px 0 var(--red); display: grid; gap: 1.15rem; grid-template-columns: 1fr 1fr;
@@ -178,7 +184,7 @@
     width: 100%; font: inherit; font-size: 1rem; color: var(--night); background: var(--snow);
     border: 2px solid #C9D3E3; border-radius: 10px; padding: 0.75rem 0.85rem; min-height: 48px;
   }
-  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230C1630' stroke-width='2.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230C1630' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.85rem center; padding-right: 2.2rem; }
   input:focus, select:focus { outline: none; border-color: var(--night); box-shadow: 0 0 0 3px var(--ice); }
   .field.invalid input, .field.invalid select { border-color: var(--red); background: #FFF1F2; }
   .err { color: var(--red-dark); font-size: 0.85rem; font-weight: 600; min-height: 0; display: none; }
@@ -218,7 +224,15 @@
 <div class="page">
   <header class="nav">
     <div class="wrap">
-      <a class="nav-logo" href="#top">Mc<span>Cup</span></a>
+      <a class="nav-logo" href="#top">
+        <svg class="toque" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="14" r="13" fill="#F4F7FB"/>
+          <path d="M14 78 C14 40 30 24 50 24 C70 24 86 40 86 78 Z" fill="#ED1B2F"/>
+          <path d="M22 50 H78 M18 62 H82" stroke="#F4F7FB" stroke-width="6" stroke-linecap="round"/>
+          <rect x="8" y="74" width="84" height="18" rx="6" fill="#F4F7FB"/>
+        </svg>
+        <span class="nav-logo-text">Mc<span>Cup</span></span>
+      </a>
       <nav class="nav-links" aria-label="Main">
         <a href="#about">What is it</a>
         <a href="#challenges">Challenges</a>
@@ -239,12 +253,7 @@
         </div>
 
         <h1 class="wordmark" id="hero-title" aria-label="McCup">
-          <svg class="toque" viewBox="0 0 100 100" aria-hidden="true">
-            <circle cx="50" cy="14" r="13" fill="#F4F7FB"/>
-            <path d="M14 78 C14 40 30 24 50 24 C70 24 86 40 86 78 Z" fill="#ED1B2F"/>
-            <path d="M22 50 H78 M18 62 H82" stroke="#F4F7FB" stroke-width="6" stroke-linecap="round"/>
-            <rect x="8" y="74" width="84" height="18" rx="6" fill="#F4F7FB"/>
-          </svg><span class="l" aria-hidden="true">M</span><span class="l small" aria-hidden="true">c</span><span class="l" aria-hidden="true">C</span><span class="l" aria-hidden="true">U</span><span class="l" aria-hidden="true">P</span>
+          <span class="l" aria-hidden="true">M</span><span class="l small" aria-hidden="true">c</span><span class="l" aria-hidden="true">C</span><span class="l" aria-hidden="true">U</span><span class="l" aria-hidden="true">P</span>
         </h1>
 
         <p class="hero-lede">Onion eating. Human bowling. Snowman relays. <strong>McGill's newest tradition</strong> is a night of very silly challenges and one very big bonfire.</p>
@@ -269,11 +278,11 @@
         <div class="about-copy">
           <p>Teams of 4 to 6 students go head to head in a run of ridiculous winter challenges. Everyone else posts up in the chill zone with food and drinks to cheer, heckle, and keep score.</p>
           <ul class="facts">
-            <li><span class="ico" aria-hidden="true">🤝</span><div><b>Mix your faculties</b><span class="t">Build a team that crosses programs. Engineers and Arts kids, finally united.</span></div></li>
-            <li><span class="ico" aria-hidden="true">📊</span><div><b>Live leaderboard</b><span class="t">Standings update after every challenge, so you always know who to trash talk.</span></div></li>
-            <li><span class="ico" aria-hidden="true">📣</span><div><b>Spirit points</b><span class="t">Costumes, chants, and loud fans all score. You can win without winning.</span></div></li>
-            <li><span class="ico" aria-hidden="true">🌭</span><div><b>Chill zone</b><span class="t">Not competing? Come watch. Food, drinks, and the best seats on Lower Field.</span></div></li>
-            <li><span class="ico" aria-hidden="true">🔥</span><div><b>Bonfire finale</b><span class="t">The champions get crowned and everyone thaws out around the fire.</span></div></li>
+            <li><span class="ico" aria-hidden="true">👥</span><div><b>Mix your faculties</b><span class="t">Teams must include students from at least 2 different faculties to compete for top spots.</span></div></li>
+            <li><span class="ico" aria-hidden="true">📊</span><div><b>Live leaderboard</b><span class="t">Real-time scoring displayed after every challenge. Compete for placement or just for bragging rights.</span></div></li>
+            <li><span class="ico" aria-hidden="true">🏁</span><div><b>Spirit points</b><span class="t">Judges award points for team spirit, creative costumes, and the loudest fan support.</span></div></li>
+            <li><span class="ico" aria-hidden="true">🍖</span><div><b>Chill zone</b><span class="t">Spectators and non-competing teams enjoy food trucks, hot drinks, music, and prime viewing areas.</span></div></li>
+            <li><span class="ico" aria-hidden="true">🔥</span><div><b>Bonfire finale</b><span class="t">Winning teams crowned at sunset. Everyone gathers around the fire to celebrate with food and music.</span></div></li>
           </ul>
         </div>
       </div>
