@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>McCup 2026 | McGill's newest winter tradition</title>
+<meta name="description" content="McCup: teams of 4 to 6 McGill students compete in ridiculous winter challenges on Lower Field this November. Free entry, live leaderboard, bonfire to close the night.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #0C1630;
+    --deep: #060D21;
+    --red: #ED1B2F;
+    --red-dark: #B5101F;
+    --snow: #F4F7FB;
+    --ice: #A9C9EC;
+    --ember: #FFB23F;
+    --muted: #B9C6DC;
+    --line: rgba(244, 247, 251, 0.16);
+    --display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+    --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--snow);
+    background: linear-gradient(180deg, var(--night) 0%, var(--deep) 100%) fixed;
+    background-color: var(--deep);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { max-width: 100%; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--ember); outline-offset: 3px; border-radius: 4px; }
+
+  #snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .page { position: relative; z-index: 1; }
+  .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(6, 13, 33, 0.82);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; }
+  .nav-logo { font-family: var(--display); font-size: 1.9rem; letter-spacing: 0.02em; text-decoration: none; line-height: 1; }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; align-items: center; gap: 1.75rem; }
+  .nav-links a:not(.btn) { text-decoration: none; font-weight: 500; font-size: 0.95rem; color: var(--muted); }
+  .nav-links a:not(.btn):hover { color: var(--snow); }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-block; font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.04em;
+    line-height: 1; padding: 0.85rem 1.5rem 0.7rem; border-radius: 10px; text-decoration: none;
+    border: 3px solid var(--snow); cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn-red { background: var(--red); color: var(--snow); box-shadow: 5px 5px 0 var(--snow); }
+  .btn-red:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--snow); }
+  .btn-red:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--snow); }
+  .btn-ghost { background: transparent; color: var(--snow); }
+  .btn-ghost:hover { background: rgba(244, 247, 251, 0.08); }
+  .nav .btn { font-size: 1.15rem; padding: 0.6rem 1rem 0.5rem; box-shadow: 3px 3px 0 var(--snow); border-width: 2px; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: clamp(2.5rem, 7vw, 5.5rem) 0 0; text-align: center; position: relative; }
+  .stickers { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem 1rem; margin-bottom: clamp(1.5rem, 4vw, 2.5rem); }
+  .sticker {
+    font-family: var(--display); font-size: clamp(1.15rem, 2.6vw, 1.5rem); letter-spacing: 0.03em; line-height: 1;
+    padding: 0.55rem 0.9rem 0.45rem; border-radius: 8px; border: 2px solid var(--snow);
+    background: var(--night); display: inline-flex; align-items: center; gap: 0.45rem;
+  }
+  .sticker:nth-child(1) { transform: rotate(-4deg); }
+  .sticker:nth-child(2) { transform: rotate(2deg); background: var(--ice); color: var(--deep); border-color: var(--ice); }
+  .sticker:nth-child(3) { transform: rotate(-1.5deg); background: var(--ember); color: var(--deep); border-color: var(--ember); }
+
+  .wordmark {
+    position: relative; display: inline-block; margin: 0; font-family: var(--display); font-weight: 400;
+    font-size: clamp(6.5rem, 26vw, 17rem); line-height: 0.82; letter-spacing: 0.01em;
+    color: var(--snow);
+  }
+  .wordmark .l { display: inline-block; text-shadow: 0.045em 0.045em 0 var(--red); transform: rotate(var(--r, 0deg)); }
+  .wordmark .l.small { font-size: 0.55em; vertical-align: 0.62em; margin: 0 0.02em; }
+  .wordmark .l:nth-child(1) { --r: -4deg; }
+  .wordmark .l:nth-child(2) { --r: 6deg; }
+  .wordmark .l:nth-child(3) { --r: -2deg; }
+  .wordmark .l:nth-child(4) { --r: 3deg; }
+  .wordmark .l:nth-child(5) { --r: -5deg; }
+  .toque { position: absolute; width: 0.42em; left: -0.08em; top: -0.3em; transform: rotate(-20deg); }
+
+  .hero-lede { max-width: 34ch; margin: 1.75rem auto 0; font-size: clamp(1.15rem, 2.4vw, 1.4rem); line-height: 1.45; color: var(--muted); }
+  .hero-lede strong { color: var(--snow); font-weight: 600; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem; }
+  .snowbank { display: block; width: 100%; height: clamp(60px, 9vw, 120px); margin-top: clamp(3rem, 7vw, 5rem); }
+
+  /* letter drop on load */
+  @media (prefers-reduced-motion: no-preference) {
+    .wordmark .l { animation: drop 0.75s cubic-bezier(.3,1.5,.5,1) both; }
+    .wordmark .l:nth-child(2) { animation-delay: 0.08s; }
+    .wordmark .l:nth-child(3) { animation-delay: 0.16s; }
+    .wordmark .l:nth-child(4) { animation-delay: 0.24s; }
+    .wordmark .l:nth-child(5) { animation-delay: 0.32s; }
+    .toque { animation: plop 0.6s 0.65s cubic-bezier(.3,1.6,.5,1) both; }
+  }
+  @keyframes drop {
+    from { transform: translateY(-110%) rotate(calc(var(--r) * -3)); opacity: 0; }
+    to { transform: translateY(0) rotate(var(--r)); opacity: 1; }
+  }
+  @keyframes plop {
+    from { transform: translateY(-80%) rotate(25deg); opacity: 0; }
+    to { transform: translateY(0) rotate(-20deg); opacity: 1; }
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: clamp(4rem, 9vw, 7rem) 0; }
+  .snow-section { background: var(--snow); color: var(--night); }
+  h2 { font-family: var(--display); font-weight: 400; font-size: clamp(3rem, 8vw, 5.5rem); line-height: 0.9; letter-spacing: 0.01em; margin: 0 0 1.25rem; }
+  .section-intro { max-width: 58ch; font-size: 1.15rem; color: inherit; opacity: 0.85; margin: 0; }
+
+  /* What is McCup */
+  .about { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 860px) { .about { grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: start; } }
+  .about h2 { color: var(--night); }
+  .about h2 .scribble { display: inline-block; background: var(--red); color: var(--snow); padding: 0 0.15em; transform: rotate(-2deg); }
+  .about-copy p { margin: 0 0 1rem; max-width: 60ch; }
+  .facts { list-style: none; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+  .facts li { display: grid; grid-template-columns: 2.75rem 1fr; gap: 0.9rem; align-items: start; }
+  .facts .ico { font-size: 1.6rem; line-height: 1; width: 2.75rem; height: 2.75rem; display: grid; place-items: center; background: var(--night); border-radius: 50%; }
+  .facts b { display: block; font-weight: 700; }
+  .facts span.t { color: #3B4766; font-size: 0.98rem; }
+
+  /* Challenges */
+  .challenges-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem 2rem; margin-bottom: 3rem; }
+  .challenges-head .section-intro { color: var(--muted); opacity: 1; max-width: 40ch; }
+  .grid { display: grid; gap: 1.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .card {
+    position: relative; background: var(--night); border: 2px solid var(--snow); border-radius: 14px;
+    padding: 1.4rem 1.3rem 1.25rem; box-shadow: 6px 6px 0 var(--red);
+  }
+  .card:nth-child(4n+1) { transform: rotate(-1.5deg); }
+  .card:nth-child(4n+2) { transform: rotate(1deg); }
+  .card:nth-child(4n+3) { transform: rotate(-0.5deg); }
+  .card:nth-child(4n+4) { transform: rotate(1.75deg); }
+  .card .emoji { font-size: 3rem; line-height: 1; display: block; margin-bottom: 0.75rem; }
+  .card h3 { font-family: var(--display); font-weight: 400; font-size: 2rem; line-height: 0.95; margin: 0 0 0.5rem; letter-spacing: 0.02em; }
+  .card p { margin: 0 0 1rem; color: var(--muted); font-size: 0.97rem; line-height: 1.5; }
+  .chaos { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--ice); padding-top: 0.75rem; border-top: 1px dashed var(--line); }
+  .chaos .flakes { letter-spacing: 0.1em; }
+  .chaos .off { opacity: 0.25; }
+  .card.mystery { background: var(--red); box-shadow: 6px 6px 0 var(--snow); }
+  .card.mystery p, .card.mystery .chaos { color: var(--snow); }
+  .card.mystery .chaos { border-top-color: rgba(255,255,255,0.35); }
+
+  /* Signup */
+  .signup { display: grid; gap: 2.5rem; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .signup { grid-template-columns: 0.85fr 1.15fr; gap: 4rem; align-items: start; } }
+  .signup-side p { margin: 0 0 1rem; color: #3B4766; max-width: 44ch; }
+  .signup-side .note { display: inline-block; margin-top: 0.5rem; background: var(--ember); color: var(--deep); font-weight: 600; padding: 0.6rem 0.9rem; border-radius: 8px; transform: rotate(-1deg); font-size: 0.95rem; }
+  form {
+    background: #fff; border: 3px solid var(--night); border-radius: 18px; padding: clamp(1.5rem, 4vw, 2.25rem);
+    box-shadow: 8px 8px 0 var(--red); display: grid; gap: 1.15rem; grid-template-columns: 1fr 1fr;
+  }
+  .field { display: grid; gap: 0.35rem; grid-column: span 2; }
+  .field.half { grid-column: span 1; }
+  @media (max-width: 560px) { .field.half { grid-column: span 2; } }
+  label { font-weight: 600; font-size: 0.95rem; }
+  .hint { font-size: 0.82rem; color: #5A6684; }
+  input, select {
+    width: 100%; font: inherit; font-size: 1rem; color: var(--night); background: var(--snow);
+    border: 2px solid #C9D3E3; border-radius: 10px; padding: 0.75rem 0.85rem; min-height: 48px;
+  }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230C1630' stroke-width='2.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.5rem; }
+  input:focus, select:focus { outline: none; border-color: var(--night); box-shadow: 0 0 0 3px var(--ice); }
+  .field.invalid input, .field.invalid select { border-color: var(--red); background: #FFF1F2; }
+  .err { color: var(--red-dark); font-size: 0.85rem; font-weight: 600; min-height: 0; display: none; }
+  .field.invalid .err { display: block; }
+  form .btn { grid-column: span 2; justify-self: start; border-color: var(--night); box-shadow: 5px 5px 0 var(--night); }
+  form .btn:hover { box-shadow: 7px 7px 0 var(--night); }
+  form .btn:active { box-shadow: 2px 2px 0 var(--night); }
+  form .btn[disabled] { opacity: 0.6; cursor: wait; }
+  .form-status { grid-column: span 2; font-weight: 600; color: var(--red-dark); margin: 0; }
+  .form-status:empty { display: none; }
+
+  .success { display: none; background: #fff; border: 3px solid var(--night); border-radius: 18px; padding: clamp(1.75rem, 4vw, 2.5rem); box-shadow: 8px 8px 0 var(--red); text-align: center; }
+  .success.show { display: block; }
+  .success .big { font-size: 4rem; line-height: 1; display: block; }
+  .success h3 { font-family: var(--display); font-weight: 400; font-size: clamp(2.5rem, 6vw, 3.5rem); line-height: 0.95; margin: 0.75rem 0 0.75rem; }
+  .success p { margin: 0 auto 1.25rem; max-width: 40ch; color: #3B4766; }
+  .success button { font: inherit; font-weight: 600; background: none; border: none; color: var(--night); text-decoration: underline; cursor: pointer; }
+
+  /* Footer */
+  footer { padding: 4rem 0 3rem; text-align: center; color: var(--muted); }
+  footer .fire { font-size: 3rem; display: block; }
+  footer .sign { font-family: var(--display); font-size: clamp(2.25rem, 6vw, 3.25rem); color: var(--snow); line-height: 1; margin: 0.5rem 0 0.5rem; letter-spacing: 0.02em; }
+  footer p { margin: 0.25rem 0; font-size: 0.95rem; }
+
+  @media (max-width: 720px) {
+    .nav-links a:not(.btn) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<div class="page">
+  <header class="nav">
+    <div class="wrap">
+      <a class="nav-logo" href="#top">Mc<span>Cup</span></a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#about">What is it</a>
+        <a href="#challenges">Challenges</a>
+        <a class="btn btn-red" href="#signup">Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title" style="padding-bottom:0">
+      <div class="wrap">
+        <div class="stickers">
+          <!-- EDIT: swap in the real date and time -->
+          <span class="sticker">❄️ Sat, Nov 14, 2026</span>
+          <span class="sticker">📍 Lower Field</span>
+          <span class="sticker">🎟️ Free entry</span>
+        </div>
+
+        <h1 class="wordmark" id="hero-title" aria-label="McCup">
+          <svg class="toque" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="14" r="13" fill="#F4F7FB"/>
+            <path d="M14 78 C14 40 30 24 50 24 C70 24 86 40 86 78 Z" fill="#ED1B2F"/>
+            <path d="M22 50 H78 M18 62 H82" stroke="#F4F7FB" stroke-width="6" stroke-linecap="round"/>
+            <rect x="8" y="74" width="84" height="18" rx="6" fill="#F4F7FB"/>
+          </svg><span class="l" aria-hidden="true">M</span><span class="l small" aria-hidden="true">c</span><span class="l" aria-hidden="true">C</span><span class="l" aria-hidden="true">U</span><span class="l" aria-hidden="true">P</span>
+        </h1>
+
+        <p class="hero-lede">Onion eating. Human bowling. Snowman relays. <strong>McGill's newest tradition</strong> is a night of very silly challenges and one very big bonfire.</p>
+
+        <div class="hero-ctas">
+          <a class="btn btn-red" href="#signup">Sign up your team</a>
+          <a class="btn btn-ghost" href="#challenges">See the challenges</a>
+        </div>
+      </div>
+      <svg class="snowbank" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 70 C120 30 220 90 360 60 C500 30 560 85 720 64 C880 42 960 92 1100 58 C1240 26 1330 80 1440 50 V120 H0 Z" fill="#F4F7FB"/>
+      </svg>
+    </section>
+
+    <!-- WHAT IS MCCUP -->
+    <section class="snow-section" id="about" aria-labelledby="about-title" style="padding-top:clamp(2rem,5vw,3.5rem)">
+      <div class="wrap about">
+        <div>
+          <h2 id="about-title">Lettuce eating energy, <span class="scribble">but bigger</span></h2>
+          <p class="section-intro">One night, one field, every faculty. McCup takes the spirit of McGill's weirdest competitions and turns it into a proper campus-wide event.</p>
+        </div>
+        <div class="about-copy">
+          <p>Teams of 4 to 6 students go head to head in a run of ridiculous winter challenges. Everyone else posts up in the chill zone with food and drinks to cheer, heckle, and keep score.</p>
+          <ul class="facts">
+            <li><span class="ico" aria-hidden="true">🤝</span><div><b>Mix your faculties</b><span class="t">Build a team that crosses programs. Engineers and Arts kids, finally united.</span></div></li>
+            <li><span class="ico" aria-hidden="true">📊</span><div><b>Live leaderboard</b><span class="t">Standings update after every challenge, so you always know who to trash talk.</span></div></li>
+            <li><span class="ico" aria-hidden="true">📣</span><div><b>Spirit points</b><span class="t">Costumes, chants, and loud fans all score. You can win without winning.</span></div></li>
+            <li><span class="ico" aria-hidden="true">🌭</span><div><b>Chill zone</b><span class="t">Not competing? Come watch. Food, drinks, and the best seats on Lower Field.</span></div></li>
+            <li><span class="ico" aria-hidden="true">🔥</span><div><b>Bonfire finale</b><span class="t">The champions get crowned and everyone thaws out around the fire.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHALLENGES -->
+    <section id="challenges" aria-labelledby="ch-title">
+      <div class="wrap">
+        <div class="challenges-head">
+          <h2 id="ch-title">The challenges</h2>
+          <p class="section-intro">A preview of what your team is signing up for. Snowflakes rate how much chaos to expect.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🧅</span>
+            <h3>Onion eating</h3>
+            <p>One raw onion, one brave teammate. Fastest to finish wins. Tears count toward spirit points.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="3 out of 5">❄❄❄<span class="off">❄❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🎳</span>
+            <h3>Human bowling</h3>
+            <p>Climb into a padded tube, get rolled down the lane, and take out as many pins as you can.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="4 out of 5">❄❄❄❄<span class="off">❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">⛄</span>
+            <h3>Snowman relay</h3>
+            <p>Each runner adds one piece. The last one gives it a face. If it falls over, you start again.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="2 out of 5">❄❄<span class="off">❄❄❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🧊</span>
+            <h3>Frozen T-shirt</h3>
+            <p>Your team gets a T-shirt frozen solid. First person to get it on wins. Body heat is allowed.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="3 out of 5">❄❄❄<span class="off">❄❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🐧</span>
+            <h3>Penguin waddle</h3>
+            <p>Balloon between your knees, waddle the course, hand it off. Pop it and you go back to the start.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="2 out of 5">❄❄<span class="off">❄❄❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🛷</span>
+            <h3>Sled tow</h3>
+            <p>Drag a teammate across the field on a toboggan. Swap at the cone. Passengers may not help.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="4 out of 5">❄❄❄❄<span class="off">❄</span></span></div>
+          </article>
+          <article class="card">
+            <span class="emoji" aria-hidden="true">🧤</span>
+            <h3>Oven mitt tower</h3>
+            <p>Stack 20 blocks while wearing oven mitts. Tallest tower when the buzzer goes takes it.</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="1 out of 5">❄<span class="off">❄❄❄❄</span></span></div>
+          </article>
+          <article class="card mystery">
+            <span class="emoji" aria-hidden="true">❓</span>
+            <h3>Mystery final</h3>
+            <p>Revealed on the night, for the top teams only. Nobody knows what it is. Not even us. (We know.)</p>
+            <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="5 out of 5">❄❄❄❄❄</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNUP -->
+    <section class="snow-section" id="signup" aria-labelledby="su-title">
+      <div class="wrap signup">
+        <div class="signup-side">
+          <h2 id="su-title">Get your team in</h2>
+          <p>Every player signs up on their own. Use the exact same team name as your teammates so we can group you together.</p>
+          <p>Teams need 4 to 6 players. Coming solo? Sign up anyway and leave the team name blank. We'll match you with a team.</p>
+          <span class="note">Watching only? No signup needed. Just show up.</span>
+        </div>
+
+        <div>
+          <form id="signup-form" novalidate>
+            <div class="field half">
+              <label for="firstName">First name</label>
+              <input id="firstName" name="firstName" autocomplete="given-name" required>
+              <span class="err">Enter your first name.</span>
+            </div>
+            <div class="field half">
+              <label for="lastName">Last name</label>
+              <input id="lastName" name="lastName" autocomplete="family-name" required>
+              <span class="err">Enter your last name.</span>
+            </div>
+            <div class="field">
+              <label for="email">McGill email</label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="firstname.lastname@mail.mcgill.ca" required>
+              <span class="err">Use your McGill email, ending in @mail.mcgill.ca or @mcgill.ca.</span>
+            </div>
+            <div class="field">
+              <label for="team">Team name <span class="hint">(optional if you're solo)</span></label>
+              <input id="team" name="team" maxlength="40" placeholder="The Frozen Onions">
+            </div>
+            <div class="field">
+              <label for="faculty">Faculty</label>
+              <select id="faculty" name="faculty" required>
+                <option value="">Choose your faculty</option>
+                <option>Agricultural and Environmental Sciences</option>
+                <option>Arts</option>
+                <option>Arts and Science</option>
+                <option>Dental Medicine and Oral Health Sciences</option>
+                <option>Education</option>
+                <option>Engineering</option>
+                <option>Law</option>
+                <option>Management (Desautels)</option>
+                <option>Medicine and Health Sciences</option>
+                <option>Music (Schulich)</option>
+                <option>Science</option>
+                <option>Other</option>
+              </select>
+              <span class="err">Choose your faculty.</span>
+            </div>
+            <p class="form-status" id="form-status" role="alert"></p>
+            <button class="btn btn-red" type="submit" id="submit-btn">Sign up for McCup</button>
+          </form>
+
+          <div class="success" id="success" role="status" aria-live="polite" tabindex="-1">
+            <span class="big" aria-hidden="true">🏆</span>
+            <h3 id="success-title">You're signed up</h3>
+            <p id="success-text">See you on Lower Field. Dress warm, bring your loudest friends, and maybe skip lunch before the onion round.</p>
+            <button type="button" id="again">Sign up another player</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span class="fire" aria-hidden="true">🔥</span>
+      <p class="sign">See you at the bonfire</p>
+      <p>McCup 2026, Lower Field, McGill University</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   GOOGLE FORM SETUP
+   1. Make a Google Form with 5 Short answer questions:
+      First name, Last name, McGill email, Team name, Faculty
+   2. In the form: ⋮ menu > Get pre-filled link, fill each field with
+      anything, click Get link, and copy it. It contains entry.123456=...
+      for each question. Paste those entry IDs below.
+   3. Your form URL looks like .../forms/d/e/LONG_ID/viewform.
+      Change "viewform" to "formResponse" and paste it as action.
+   Responses then land in the form (link it to a Sheet from the
+   Responses tab). Until action is filled in, the form runs in demo mode.
+   ========================================================= */
+const GOOGLE_FORM = {
+  action: "", // e.g. "https://docs.google.com/forms/d/e/1FAIpQLSc.../formResponse"
+  entries: {
+    firstName: "entry.1111111111",
+    lastName:  "entry.2222222222",
+    email:     "entry.3333333333",
+    team:      "entry.4444444444",
+    faculty:   "entry.5555555555"
+  }
+};
+
+/* ---------- Signup form ---------- */
+(function () {
+  const form = document.getElementById("signup-form");
+  const status = document.getElementById("form-status");
+  const btn = document.getElementById("submit-btn");
+  const success = document.getElementById("success");
+  const mcgill = /^[^\s@]+@(mail\.)?mcgill\.ca$/i;
+
+  const checks = {
+    firstName: v => v.trim().length > 0,
+    lastName:  v => v.trim().length > 0,
+    email:     v => mcgill.test(v.trim()),
+    faculty:   v => v !== ""
+  };
+
+  function validate(name) {
+    const el = form.elements[name];
+    const ok = checks[name](el.value);
+    el.closest(".field").classList.toggle("invalid", !ok);
+    el.setAttribute("aria-invalid", String(!ok));
+    return ok;
+  }
+
+  Object.keys(checks).forEach(name => {
+    const el = form.elements[name];
+    el.addEventListener("blur", () => { if (el.value) validate(name); });
+    el.addEventListener("input", () => {
+      if (el.closest(".field").classList.contains("invalid")) validate(name);
+    });
+  });
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    status.textContent = "";
+    const results = Object.keys(checks).map(validate);
+    if (results.includes(false)) {
+      const firstBad = form.querySelector(".field.invalid input, .field.invalid select");
+      if (firstBad) firstBad.focus();
+      return;
+    }
+
+    const data = {
+      firstName: form.firstName.value.trim(),
+      lastName:  form.lastName.value.trim(),
+      email:     form.email.value.trim().toLowerCase(),
+      team:      form.team.value.trim() || "Solo (needs a team)",
+      faculty:   form.faculty.value
+    };
+
+    btn.disabled = true;
+    btn.textContent = "Signing you up…";
+
+    try {
+      if (GOOGLE_FORM.action) {
+        const body = new URLSearchParams();
+        Object.entries(GOOGLE_FORM.entries).forEach(([key, entry]) => body.append(entry, data[key]));
+        // Google Forms doesn't send CORS headers, so no-cors is required and the response can't be read.
+        await fetch(GOOGLE_FORM.action, { method: "POST", mode: "no-cors", body });
+      } else {
+        console.info("McCup demo mode: add your Google Form URL to GOOGLE_FORM.action", data);
+        await new Promise(r => setTimeout(r, 600));
+      }
+      document.getElementById("success-title").textContent = `You're in, ${data.firstName}`;
+      document.getElementById("success-text").textContent = form.team.value.trim()
+        ? `${data.firstName} is on ${data.team}. See you on Lower Field. Dress warm and maybe skip lunch before the onion round.`
+        : `We'll match you with a team and email you at ${data.email}. Dress warm and maybe skip lunch before the onion round.`;
+      form.style.display = "none";
+      success.classList.add("show");
+      success.focus();
+    } catch (err) {
+      status.textContent = "Your signup didn't go through. Check your connection and try again.";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Sign up for McCup";
+    }
+  });
+
+  document.getElementById("again").addEventListener("click", () => {
+    const team = form.team.value;
+    form.reset();
+    form.team.value = team; // keep the team name for the next teammate
+    success.classList.remove("show");
+    form.style.display = "";
+    form.firstName.focus();
+  });
+})();
+
+/* ---------- Falling snow ---------- */
+(function () {
+  const canvas = document.getElementById("snow");
+  const ctx = canvas.getContext("2d");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let w, h, flakes = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize() {
+    w = window.innerWidth; h = window.innerHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.min(Math.round(w / 7), 220);
+    flakes = Array.from({ length: count }, () => makeFlake(true));
+    if (reduce) draw();
+  }
+
+  function makeFlake(anywhere) {
+    const r = Math.random() * 2.6 + 0.8;
+    return {
+      x: Math.random() * w,
+      y: anywhere ? Math.random() * h : -10,
+      r,
+      speed: r * 0.35 + 0.25,
+      drift: Math.random() * Math.PI * 2,
+      sway: Math.random() * 0.6 + 0.2,
+      alpha: Math.random() * 0.5 + 0.35
+    };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const f of flakes) {
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(244,247,251,${f.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function tick() {
+    for (let i = 0; i < flakes.length; i++) {
+      const f = flakes[i];
+      f.drift += 0.01;
+      f.y += f.speed;
+      f.x += Math.sin(f.drift) * f.sway;
+      if (f.y > h + 10 || f.x < -10 || f.x > w + 10) flakes[i] = makeFlake(false);
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  if (!reduce) requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
