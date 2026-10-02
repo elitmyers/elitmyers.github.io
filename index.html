@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>McCup 2026 | McGill's newest winter tradition</title>
-<meta name="description" content="McCup: teams of 4 to 6 McGill students compete in ridiculous winter challenges on Lower Field this November. Free entry, live leaderboard, bonfire to close the night.">
+<meta name="description" content="McCup: teams of 4 to 6 McGill students compete in ridiculous winter challenges on Lower Field this November. Free entry, live leaderboard, bonfire to close the night.[...]
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -151,7 +151,10 @@
   .card {
     position: relative; background: var(--night); border: 2px solid var(--snow); border-radius: 14px;
     padding: 1.4rem 1.3rem 1.25rem; box-shadow: 6px 6px 0 var(--red);
+    cursor: pointer; transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
+  .card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--red); }
+  .card:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0 var(--red); }
   .card:nth-child(4n+1) { transform: rotate(-1.5deg); }
   .card:nth-child(4n+2) { transform: rotate(1deg); }
   .card:nth-child(4n+3) { transform: rotate(-0.5deg); }
@@ -165,6 +168,20 @@
   .card.mystery { background: var(--red); box-shadow: 6px 6px 0 var(--snow); }
   .card.mystery p, .card.mystery .chaos { color: var(--snow); }
   .card.mystery .chaos { border-top-color: rgba(255,255,255,0.35); }
+
+  /* Card popup modal */
+  .card-popup-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 100; }
+  .card-popup-overlay.show { display: flex; align-items: center; justify-content: center; }
+  .card-popup { position: relative; background: var(--night); border: 2px solid var(--snow); border-radius: 14px; padding: 2rem; max-width: 90vw; width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); }
+  .card-popup.mystery { background: var(--red); }
+  .card-popup-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--snow); padding: 0.5rem; display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 8px; transition: background 0.12s ease; }
+  .card-popup-close:hover { background: rgba(244, 247, 251, 0.1); }
+  .card-popup .emoji { font-size: 4rem; margin-bottom: 1rem; }
+  .card-popup h3 { font-family: var(--display); font-weight: 400; font-size: 2.5rem; line-height: 0.95; margin: 0 0 1rem; letter-spacing: 0.02em; }
+  .card-popup p { margin: 0 0 1.5rem; color: var(--muted); font-size: 1rem; line-height: 1.6; }
+  .card-popup.mystery p { color: var(--snow); }
+  .card-popup .chaos { margin-top: 1.5rem; border-top: 1px dashed var(--line); padding-top: 1rem; }
+  .card-popup.mystery .chaos { border-top-color: rgba(255,255,255,0.35); }
 
   /* Signup */
   .signup { display: grid; gap: 2.5rem; grid-template-columns: 1fr; }
@@ -184,7 +201,7 @@
     width: 100%; font: inherit; font-size: 1rem; color: var(--night); background: var(--snow);
     border: 2px solid #C9D3E3; border-radius: 10px; padding: 0.75rem 0.85rem; min-height: 48px;
   }
-  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230C1630' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.85rem center; padding-right: 2.2rem; }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%230C1630' stroke-width='1.5' fill='none' stroke-linecap='round'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1rem; padding-right: 2.5rem; }
   input:focus, select:focus { outline: none; border-color: var(--night); box-shadow: 0 0 0 3px var(--ice); }
   .field.invalid input, .field.invalid select { border-color: var(--red); background: #FFF1F2; }
   .err { color: var(--red-dark); font-size: 0.85rem; font-weight: 600; min-height: 0; display: none; }
@@ -253,7 +270,7 @@
         </div>
 
         <h1 class="wordmark" id="hero-title" aria-label="McCup">
-          <span class="l" aria-hidden="true">M</span><span class="l small" aria-hidden="true">c</span><span class="l" aria-hidden="true">C</span><span class="l" aria-hidden="true">U</span><span class="l" aria-hidden="true">P</span>
+          <span class="l" aria-hidden="true">M</span><span class="l small" aria-hidden="true">c</span><span class="l" aria-hidden="true">C</span><span class="l" aria-hidden="true">U</span><span class="l" aria-hidden="true">p</span>
         </h1>
 
         <p class="hero-lede">Onion eating. Human bowling. Snowman relays. <strong>McGill's newest tradition</strong> is a night of very silly challenges and one very big bonfire.</p>
@@ -296,49 +313,49 @@
           <p class="section-intro">A preview of what your team is signing up for. Snowflakes rate how much chaos to expect.</p>
         </div>
         <div class="grid">
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🧅</span>
             <h3>Onion eating</h3>
             <p>One raw onion, one brave teammate. Fastest to finish wins. Tears count toward spirit points.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="3 out of 5">❄❄❄<span class="off">❄❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🎳</span>
             <h3>Human bowling</h3>
             <p>Climb into a padded tube, get rolled down the lane, and take out as many pins as you can.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="4 out of 5">❄❄❄❄<span class="off">❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">⛄</span>
             <h3>Snowman relay</h3>
             <p>Each runner adds one piece. The last one gives it a face. If it falls over, you start again.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="2 out of 5">❄❄<span class="off">❄❄❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🧊</span>
             <h3>Frozen T-shirt</h3>
             <p>Your team gets a T-shirt frozen solid. First person to get it on wins. Body heat is allowed.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="3 out of 5">❄❄❄<span class="off">❄❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🐧</span>
             <h3>Penguin waddle</h3>
             <p>Balloon between your knees, waddle the course, hand it off. Pop it and you go back to the start.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="2 out of 5">❄❄<span class="off">❄❄❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🛷</span>
             <h3>Sled tow</h3>
             <p>Drag a teammate across the field on a toboggan. Swap at the cone. Passengers may not help.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="4 out of 5">❄❄❄❄<span class="off">❄</span></span></div>
           </article>
-          <article class="card">
+          <article class="card" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">🧤</span>
             <h3>Oven mitt tower</h3>
             <p>Stack 20 blocks while wearing oven mitts. Tallest tower when the buzzer goes takes it.</p>
             <div class="chaos"><span>Chaos</span><span class="flakes" aria-label="1 out of 5">❄<span class="off">❄❄❄❄</span></span></div>
           </article>
-          <article class="card mystery">
+          <article class="card mystery" role="button" tabindex="0">
             <span class="emoji" aria-hidden="true">❓</span>
             <h3>Mystery final</h3>
             <p>Revealed on the night, for the top teams only. Nobody knows what it is. Not even us. (We know.)</p>
@@ -422,6 +439,14 @@
   </footer>
 </div>
 
+<!-- Card popup modal -->
+<div class="card-popup-overlay" id="cardPopupOverlay">
+  <div class="card-popup" id="cardPopup" role="dialog" aria-modal="true">
+    <button class="card-popup-close" id="cardPopupClose" aria-label="Close popup">✕</button>
+    <div id="cardPopupContent"></div>
+  </div>
+</div>
+
 <script>
 /* =========================================================
    GOOGLE FORM SETUP
@@ -445,6 +470,57 @@ const GOOGLE_FORM = {
     faculty:   "entry.5555555555"
   }
 };
+
+/* ---------- Card popups ---------- */
+(function () {
+  const overlay = document.getElementById("cardPopupOverlay");
+  const popup = document.getElementById("cardPopup");
+  const content = document.getElementById("cardPopupContent");
+  const closeBtn = document.getElementById("cardPopupClose");
+  const cards = document.querySelectorAll(".card");
+
+  function openPopup(card) {
+    const emoji = card.querySelector(".emoji").textContent;
+    const title = card.querySelector("h3").textContent;
+    const desc = card.querySelector("p").textContent;
+    const chaos = card.querySelector(".chaos").innerHTML;
+    const isMystery = card.classList.contains("mystery");
+
+    popup.classList.toggle("mystery", isMystery);
+    content.innerHTML = `
+      <span class="emoji" aria-hidden="true">${emoji}</span>
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      <div class="chaos">${chaos}</div>
+    `;
+    
+    overlay.classList.add("show");
+    closeBtn.focus();
+  }
+
+  function closePopup() {
+    overlay.classList.remove("show");
+  }
+
+  cards.forEach(card => {
+    card.addEventListener("click", () => openPopup(card));
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openPopup(card);
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) closePopup();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && overlay.classList.contains("show")) closePopup();
+  });
+})();
 
 /* ---------- Signup form ---------- */
 (function () {
